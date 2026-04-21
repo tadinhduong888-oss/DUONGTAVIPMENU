@@ -1,0 +1,295 @@
+# DUONGTAVIPMENU
+Dilyb
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DUONG TA IOS - ULTIMATE VIP GLASS</title>
+<style>
+:root {
+    --primary: #007AFF; 
+    --glass-bg: rgba(255, 255, 255, 0.8); 
+    --glass-border: rgba(255, 255, 255, 0.4);
+    --text-main: #1c1e21;
+}
+
+*{box-sizing:border-box; outline: none; -webkit-tap-highlight-color: transparent;}
+
+body {
+    margin:0; 
+    background-image: linear-gradient(45deg, #f5f7fb 0%, #007AFF 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+.wrap {
+    width: 375px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(25px) saturate(180%);
+    -webkit-backdrop-filter: blur(25px) saturate(180%);
+    border-radius: 35px;
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+    overflow: hidden;
+    transition: 0.4s ease;
+}
+
+.screen { padding: 45px 25px; text-align: center; display: none; width: 100%; }
+.screen.active { display: block; animation: fadeIn 0.5s ease; }
+@keyframes fadeIn { from {opacity: 0; transform: scale(0.95);} to {opacity: 1; transform: scale(1);} }
+
+.icon-tech {
+    width: 85px; height: 85px;
+    background: linear-gradient(135deg, #007AFF, #0056b3);
+    margin: 0 auto 25px;
+    border-radius: 25px;
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-weight: 900; font-size: 35px;
+    box-shadow: 0 10px 20px rgba(0, 122, 255, 0.3);
+}
+
+.loader {
+    width: 55px; height: 55px;
+    border: 5px solid rgba(0, 122, 255, 0.1);
+    border-top: 5px solid var(--primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 20px auto;
+}
+@keyframes spin { 100% { transform: rotate(360deg); } }
+
+.checkmark-circle {
+    width: 80px; height: 80px;
+    border: 4px solid #34c759;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin: 20px auto;
+    color: #34c759; font-size: 40px; font-weight: bold;
+    animation: bounce 0.5s ease-out;
+}
+@keyframes bounce { 0%{transform:scale(0)} 80%{transform:scale(1.2)} 100%{transform:scale(1)} }
+
+/* --- GIAO DIỆN MENU CHÍNH --- */
+#menu-screen { padding: 0; text-align: left; }
+.header { display: flex; align-items: center; gap: 15px; padding: 20px; background: rgba(255, 255, 255, 0.3); border-bottom: 1px solid var(--glass-border); }
+.avatar { width: 55px; height: 55px; border-radius: 18px; border: 2.5px solid #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+.title { font-weight: 800; color: #000; font-size: 19px; letter-spacing: -0.5px; display: flex; align-items: center; gap: 6px; }
+.verify-badge { width: 17px; height: 17px; background: #1877F2; border-radius: 50%; display: flex; align-items: center; justify-content: center; position: relative; }
+.verify-badge::after { content: '✓'; color: white; font-size: 10px; font-weight: bold; }
+
+/* Inject Section */
+.inject-box {
+    margin: 15px; padding: 15px;
+    background: rgba(0, 122, 255, 0.05);
+    border-radius: 20px; border: 1.5px dashed var(--primary);
+    text-align: center;
+}
+.status-text { font-size: 12px; font-weight: 800; color: #444; margin-bottom: 8px; display: block;}
+.progress-container { width: 100%; height: 10px; background: rgba(0,0,0,0.06); border-radius: 10px; overflow: hidden; margin: 10px 0; display: none; }
+.progress-bar { width: 0%; height: 100%; background: var(--primary); transition: 0.2s; }
+
+/* Tabs */
+.tabs { display: flex; padding: 0 15px; gap: 8px; }
+.tab { flex: 1; text-align: center; padding: 11px 0; border-radius: 14px; cursor: pointer; font-size: 11.5px; font-weight: 800; color: #666; background: rgba(255, 255, 255, 0.4); transition: 0.3s; }
+.tab.active { background: var(--primary); color: #fff; box-shadow: 0 5px 10px rgba(0, 122, 255, 0.2); }
+
+/* Panels */
+.panel { display: none; padding: 10px 15px 25px; max-height: 380px; overflow-y: auto; }
+.panel.active { display: block; }
+.item { display: flex; align-items: center; justify-content: space-between; background: rgba(255, 255, 255, 0.3); border-radius: 20px; padding: 15px 18px; margin-bottom: 10px; border: 1px solid rgba(255, 255, 255, 0.4); }
+.item-label { font-weight: 600; font-size: 14px; color: #333; }
+
+/* Custom Switch 3D */
+.sw { width: 48px; height: 26px; background: rgba(0, 0, 0, 0.1); border-radius: 50px; position: relative; cursor: pointer; transition: 0.3s; }
+.sw:after { content: ""; width: 20px; height: 20px; background: #fff; border-radius: 50%; position: absolute; top: 3px; left: 4px; transition: 0.3s; box-shadow: 0 3px 8px rgba(0,0,0,0.2); }
+.sw.on { background: var(--primary); }
+.sw.on:after { left: 24px; }
+
+/* Buttons */
+input { width: 100%; padding: 16px; border-radius: 18px; border: 1px solid rgba(255,255,255,0.5); background: rgba(255, 255, 255, 0.5); margin-bottom: 15px; font-size: 14px; color: #000; text-align: center; }
+button { width: 100%; padding: 15px; border-radius: 18px; border: none; background: var(--primary); color: #fff; font-weight: 800; cursor: pointer; box-shadow: 0 8px 20px rgba(0, 122, 255, 0.2); }
+.btn-mini { width: auto; padding: 7px 18px; font-size: 11px; border-radius: 10px; }
+
+.toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(10px); padding: 12px 30px; border-radius: 50px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); display: none; z-index: 9999; font-weight: 700; font-size: 12px; border: 1px solid #eee; }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <!-- MÀN HÌNH LOGIN -->
+  <div id="screen-login" class="screen active">
+    <div class="icon-tech">DT</div>
+    <h2 style="margin-bottom: 5px; font-weight: 800;">VIP ACCESS</h2>
+    <p style="color:#555; font-size:13px; margin-bottom:25px">Xác thực mã Premium IOS</p>
+    <div class="login-box">
+      <input id="key-input" type="password" placeholder="••••••••••••">
+      <button onclick="handleLogin()">KÍCH HOẠT VIP</button>
+    </div>
+    <div style="margin-top: 35px; font-size: 10px; color: #666; font-weight: 800; letter-spacing: 1px;">MADE BY DUONG TA IOS</div>
+  </div>
+
+  <!-- MÀN HÌNH LOADING 10s -->
+  <div id="screen-loading" class="screen">
+    <div class="loader"></div>
+    <h3 style="margin-top:20px">ĐANG KHỞI TẠO...</h3>
+    <p id="countdown" style="font-weight: 900; color: var(--primary); font-size: 32px;">10s</p>
+  </div>
+
+  <!-- MÀN HÌNH THÀNH CÔNG -->
+  <div id="screen-success" class="screen">
+    <div class="checkmark-circle">✓</div>
+    <h2 style="color:#34c759; margin-bottom: 5px;">THÀNH CÔNG!</h2>
+    <p style="font-size:14px; color:#555">Dữ liệu Premium đã sẵn sàng</p>
+  </div>
+
+  <!-- MÀN HÌNH MENU CHÍNH -->
+  <div id="menu-screen" class="screen">
+    <div class="header">
+      <img class="avatar" src="https://i.imgur.com/5u9f6kS.png">
+      <div class="title-container">
+        <div class="title">DUONG TA IOS <div class="verify-badge"></div></div>
+        <span style="font-size:10px; font-weight:800; color:var(--primary)">● TRẠNG THÁI: ACTIVE VIP</span>
+      </div>
+    </div>
+
+    <!-- NÚT KÍCH HOẠT VÀO GAME -->
+    <div class="inject-box">
+        <span class="status-text" id="inj-status">CHƯA NẠP DỮ LIỆU GAME</span>
+        <div class="progress-container" id="prog-cont">
+            <div class="progress-bar" id="prog-bar"></div>
+        </div>
+        <button id="btn-inject" style="padding: 10px; font-size: 12px; border-radius: 12px;" onclick="startInjection()">KÍCH HOẠT VÀO GAME</button>
+    </div>
+
+    <div class="tabs">
+      <div class="tab active" onclick="showTab(0)">ESP</div>
+      <div class="tab" onclick="showTab(1)">AIMBOT</div>
+      <div class="tab" onclick="showTab(2)">SETTING</div>
+    </div>
+
+    <!-- TAB ESP (Đầy đủ) -->
+    <div class="panel active">
+      <div class="item"><span class="item-label">Bật ESP Toàn Cảnh</span><div class="sw" onclick="toggle(this,'ESP')"></div></div>
+      <div class="item"><span class="item-label">Hiện Khung (Box 3D)</span><div class="sw" onclick="toggle(this,'Box')"></div></div>
+      <div class="item"><span class="item-label">Hiện Xương (Skeleton)</span><div class="sw" onclick="toggle(this,'Skeleton')"></div></div>
+      <div class="item"><span class="item-label">Hiện Tên Đối Thủ</span><div class="sw" onclick="toggle(this,'Name')"></div></div>
+      <div class="item"><span class="item-label">Hiện Thanh Máu</span><div class="sw" onclick="toggle(this,'Health')"></div></div>
+      <div class="item"><span class="item-label">Hiện Khoảng Cách</span><div class="sw" onclick="toggle(this,'Distance')"></div></div>
+      <div class="item"><span class="item-label">Hiện Súng Địch Cầm</span><div class="sw" onclick="toggle(this,'Weapon')"></div></div>
+      <div class="item"><span class="item-label">Cảnh Báo Lựu Đạn</span><div class="sw" onclick="toggle(this,'Warning')"></div></div>
+    </div>
+
+    <!-- TAB AIMBOT (Đầy đủ) -->
+    <div class="panel">
+      <div class="item"><span class="item-label">Bật Aimbot (Auto Lock)</span><div class="sw" onclick="toggle(this,'Aimbot')"></div></div>
+      <div class="item"><span class="item-label">Dự Đoán Chạy (Predict)</span><div class="sw" onclick="toggle(this,'Prediction')"></div></div>
+      <div class="item"><span class="item-label">Độ Mượt (Smooth Aim)</span><div class="sw" onclick="toggle(this,'Smooth')"></div></div>
+      <div class="item"><span class="item-label">Tự Động Bắn (Fire)</span><div class="sw" onclick="toggle(this,'AutoFire')"></div></div>
+      <div class="item"><span class="item-label">Vòng Tròn FOV</span><div class="sw" onclick="toggle(this,'FOV')"></div></div>
+      <div class="item"><span class="item-label">Ngắm Vào Đầu (Head)</span><div class="sw" onclick="toggle(this,'AimHead')"></div></div>
+      <div class="item"><span class="item-label">Ngắm Vào Bụng (Body)</span><div class="sw" onclick="toggle(this,'AimChest')"></div></div>
+      <div class="item"><span class="item-label">Bỏ Qua Địch Đã Gục</span><div class="sw" onclick="toggle(this,'IgnoreKnock')"></div></div>
+    </div>
+
+    <!-- TAB SETTING -->
+    <div class="panel">
+      <div class="item"><span class="item-label">Chống Quét (Bypass)</span><div class="sw" onclick="toggle(this,'Bypass')"></div></div>
+      <div class="item"><span class="item-label">Xóa Dữ Liệu Rác</span><button class="btn-mini" style="background:#000" onclick="toast('Đang xử lý...')">CHẠY</button></div>
+      <div class="item"><span class="item-label">Liên Hệ TikTok</span><button class="btn-mini" style="background:#000" onclick="window.open('https://www.tiktok.com/@duongtauytinso1tg')">MỞ</button></div>
+    </div>
+    
+    <div style="padding: 10px 20px 20px; text-align: center;">
+        <button style="background:rgba(255, 59, 48, 0.1); color:#ff3b30; box-shadow: none; font-size: 11px; padding: 10px;" onclick="location.reload()">ĐĂNG XUẤT KEY</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+const SECRET_KEY = "DUONG-TA-KEY-VIP-08";
+
+function changeScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+}
+
+function handleLogin() {
+    const input = document.getElementById('key-input').value;
+    if(input === SECRET_KEY) {
+        changeScreen('screen-loading');
+        let count = 10;
+        const countdownEl = document.getElementById('countdown');
+        const timer = setInterval(() => {
+            count--;
+            countdownEl.innerText = count + 's';
+            if(count <= 0) {
+                clearInterval(timer);
+                showSuccess();
+            }
+        }, 1000);
+    } else {
+        toast('Key không chính xác!');
+    }
+}
+
+function showSuccess() {
+    changeScreen('screen-success');
+    setTimeout(() => {
+        changeScreen('menu-screen');
+    }, 1500);
+}
+
+// Hàm kích hoạt game Inject 100%
+function startInjection() {
+    const btn = document.getElementById('btn-inject');
+    const status = document.getElementById('inj-status');
+    const progCont = document.getElementById('prog-cont');
+    const progBar = document.getElementById('prog-bar');
+
+    btn.style.display = 'none';
+    progCont.style.display = 'block';
+    status.innerText = "ĐANG NẠP DỮ LIỆU: 0%";
+    status.style.color = "#007AFF";
+
+    let width = 0;
+    const interval = setInterval(() => {
+        if (width >= 100) {
+            clearInterval(interval);
+            status.innerText = "TRẠNG THÁI: GAME ĐÃ ĐƯỢC KÍCH HOẠT";
+            status.style.color = "#34c759";
+            progCont.style.display = 'none';
+            toast("Kích hoạt dữ liệu thành công!");
+        } else {
+            width++;
+            progBar.style.width = width + '%';
+            status.innerText = "ĐANG NẠP DỮ LIỆU: " + width + "%";
+        }
+    }, 45);
+}
+
+function showTab(i){
+  document.querySelectorAll('.tab').forEach((t,idx)=>t.classList.toggle('active',idx===i));
+  document.querySelectorAll('.panel').forEach((p,idx)=>p.classList.toggle('active',idx===i));
+}
+
+function toggle(e,n){
+  e.classList.toggle('on');
+  toast((e.classList.contains('on')?'Bật ':'Tắt ')+n);
+}
+
+function toast(t){
+  const x = document.getElementById('toast');
+  x.innerText = t; x.style.display = 'block';
+  setTimeout(()=>x.style.display='none', 1500);
+}
+
+document.getElementById('key-input').addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') handleLogin();
+});
+</script>
+</body>
+</html>
